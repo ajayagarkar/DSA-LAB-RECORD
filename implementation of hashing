@@ -1,0 +1,74 @@
+#include <stdio.h>
+
+#define SIZE 10
+
+int hashTable[SIZE];
+
+// Function to insert a key using Linear Probing
+void insert(int key) {
+    int index = key % SIZE;
+    int i = 0;
+
+    while (hashTable[(index + i) % SIZE] != -1 && i < SIZE)
+        i++;
+
+    if (i == SIZE)
+        printf("Hash table is full! Cannot insert %d\n", key);
+    else
+        hashTable[(index + i) % SIZE] = key;
+}
+
+// Function to search for a key
+int search(int key) {
+    int index = key % SIZE;
+    int i = 0;
+
+    while (hashTable[(index + i) % SIZE] != -1 && i < SIZE) {
+        if (hashTable[(index + i) % SIZE] == key)
+            return (index + i) % SIZE;
+        i++;
+    }
+    return -1;
+}
+
+// Function to display the hash table
+void display() {
+    printf("\nHash Table:\n");
+    for (int i = 0; i < SIZE; i++) {
+        printf("[%d] --> ", i);
+        if (hashTable[i] != -1)
+            printf("%d\n", hashTable[i]);
+        else
+            printf("Empty\n");
+    }
+}
+
+int main() {
+    int n, key, pos;
+
+    // Initialize table
+    for (int i = 0; i < SIZE; i++)
+        hashTable[i] = -1;
+
+    printf("Enter number of elements to insert: ");
+    scanf("%d", &n);
+
+    printf("Enter %d keys: ", n);
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &key);
+        insert(key);
+    }
+
+    display();
+
+    printf("\nEnter key to search: ");
+    scanf("%d", &key);
+
+    pos = search(key);
+    if (pos == -1)
+        printf("Key %d not found!\n", key);
+    else
+        printf("Key %d found at position %d\n", key, pos);
+
+    return 0;
+}
